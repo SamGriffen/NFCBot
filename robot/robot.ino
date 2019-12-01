@@ -16,6 +16,8 @@ Shieldbot robot = Shieldbot(); // Creates a robot object
 // Constants for wooden surface
 #define CM_PER_SEC 36.36      // Centimeters per second with full motor speed
 #define DEG_PER_SEC 500      // Degrees per second with motors at full throttle
+
+// Robot movememnt controls
 #define ROTATE_SPEED_PERC 0.25 // Percentage of full speed to rotate at
 
 
