@@ -14,8 +14,8 @@ Shieldbot robot = Shieldbot(); // Creates a robot object
 #define M_DELIM ','
 
 // Constants for wooden surface
-#define CM_PER_SEC 36.36      // Centimeters per second with full motor speed
-#define DEG_PER_SEC 500      // Degrees per second with motors at full throttle
+#define CM_PER_SEC 42.0      // Centimeters per second with full motor speed
+#define DEG_PER_SEC 700      // Degrees per second with motors at full throttle
 
 // Robot movememnt controls
 #define ROTATE_SPEED_PERC 0.25 // Percentage of full speed to rotate at
@@ -57,6 +57,7 @@ void loop() {
   
   if(radio.available()){
     incomingChar(radio.read()); // Handle the incoming character
+    
     if(msg.unread){ // If there is an unread message, pass it through to the robot'
       printCmd();
       runCommand();
@@ -71,7 +72,7 @@ void loop() {
 void runCommand(){
   if(msg.cmd == 'F' || msg.cmd == 'B'){
     robot.drive(127 * (msg.cmd == 'F' ? 1 : -1), 127 * (msg.cmd == 'F' ? 1 : -1)); // Set the motors to move in a direction. This will be either forward or backward, determined by the result of msg.cmd == 'F'
-    delay((msg.num / CM_PER_SEC)*1000); // Keep the motors running for the desired distance
+    delay((msg.num / (float)CM_PER_SEC)*1000); // Keep the motors running for the desired distance
     robot.stop(); // Stop the robot
   }
   else if(msg.cmd == 'R' || msg.cmd == 'L'){
@@ -89,6 +90,7 @@ void runCommand(){
  * @param char incoming  The incoming character to handle
  */
 void incomingChar(char incoming){
+  Serial.println(incoming);
   if(incoming == M_START && !msg.reading){ // If this is the start of a message
     msg.reading = true; // Start the struct reading incoming characters
     msg.curChar = 0; // Start at the very beginning of the string
